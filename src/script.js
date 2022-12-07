@@ -41,6 +41,7 @@ class GameEventEmitter {
 
 }
 
+
 class Player extends GameObject {
 
     constructor(texture, x, y) {
@@ -48,45 +49,70 @@ class Player extends GameObject {
         super(texture, x, y);
 
         gameEventEmitter.register(events.KEYUP, () => {
-            this.y -= (this.y >= texture.height ? texture.height : 0);
+            if (this.y >= texture.height) {
+                this.y -= texture.height;
+                gameEventEmitter.emit(events.PLAYERMOVE);
+            }
         });
 
         gameEventEmitter.register(events.KEYDOWN, () => {
-            this.y += (this.y < ((texture.height * 6) - texture.height) ? texture.height : 0);
+            if (this.y < (texture.height * 6) - texture.height) {
+                this.y += texture.height;
+                gameEventEmitter.emit(events.PLAYERMOVE);
+            }
         });
 
         gameEventEmitter.register(events.KEYRIGHT, () => {
-            this.x += (this.x < ((texture.width * 6) - texture.width) ? texture.width : 0);
+            if (this.x < (texture.width * 6) - texture.width) {
+                this.x += texture.width;
+                gameEventEmitter.emit(events.PLAYERMOVE);
+            }
         });
 
         gameEventEmitter.register(events.KEYLEFT, () => {
-            this.x -= (this.x >= texture.width ? texture.width : 0);
+            if (this.x >= texture.width) {
+                this.x -= texture.width;
+                gameEventEmitter.emit(events.PLAYERMOVE);
+            }
         });
 
     }
 
 }
 
+class Point extends GameObject {
+
+    constructor(texture, x, y) {
+        super(texture, x, y);
+    }
+
+}
+
 
 const gameObjects = [];
-
 const gameEventEmitter = new GameEventEmitter();
 const events = {
+
     KEYUP: "KEYUP",
     KEYDOWN: "KEYDOWN",
     KEYRIGHT: "KEYRIGHT",
-    KEYLEFT: "KEYLEFT"
+    KEYLEFT: "KEYLEFT",
+
+    PLAYERMOVE: "PLAYERMOVE"
+
 };
 
 const canvas = document.getElementById("canvas");
 const canvasContext = canvas.getContext("2d");
 
 let texturePlayer;
+let texturePoint;
 
 window.onload = async () => {
     
     // Load the textures
     texturePlayer = await loadTexture("./assets/player.jpg");
+    texturePoint = await loadTexture("./assets/point.png");
 
     // Create the game objects
     initGame();
@@ -113,6 +139,12 @@ function loadTexture(path) {
 function initGame() {
 
     gameObjects.push(new Player(texturePlayer, 0, 0));
+    
+    for (let x = 0; x <= ((texturePlayer.width * 6) - texturePlayer.width); x += texturePlayer.width) {
+        for (let y = 0; y <= ((texturePlayer.height * 6) - texturePlayer.height); y += texturePlayer.height) {
+            gameObjects.push(new Point(texturePoint, x, y));
+        }
+    }
 
 }
 
