@@ -13,6 +13,34 @@ class GameObject {
 
 }
 
+class GameEventEmitter {
+
+    constructor() {
+        this.listeners = {};
+    }
+
+    register(eventName, action) {
+
+        if (!this.listeners[eventName]) {
+            this.listeners[eventName] = [];
+        }
+
+        this.listeners[eventName].push(action);
+
+    }
+
+    emit(eventName) {
+
+        if (!this.listeners[eventName]) {
+            return;
+        }
+
+        this.listeners[eventName].forEach((action) => action());
+
+    }
+
+}
+
 class Player extends GameObject {
 
     constructor(texture, x, y) {
@@ -34,34 +62,6 @@ class Player extends GameObject {
         gameEventEmitter.register(events.KEYLEFT, () => {
             this.x -= (this.x >= texture.width ? texture.width : 0);
         });
-
-    }
-
-}
-
-class GameEventEmitter {
-
-    constructor() {
-        this.listeners = {};
-    }
-
-    register(event, action) {
-
-        if (!this.listeners[event]) {
-            this.listeners[event] = [];
-        }
-
-        this.listeners[event].push(action);
-
-    }
-
-    emit(event) {
-
-        if (!this.listeners[event]) {
-            return;
-        }
-
-        this.listeners[event].forEach((action) => action(event));
 
     }
 
