@@ -41,7 +41,6 @@ class GameEventEmitter {
 
 }
 
-
 class Player extends GameObject {
 
     constructor(texture, x, y) {
@@ -56,14 +55,14 @@ class Player extends GameObject {
         });
 
         gameEventEmitter.register(events.KEYDOWN, () => {
-            if (this.y < (texture.height * 6) - texture.height) {
+            if (this.y < (texture.height * TEXTURES_PER_COLUMN) - texture.height) {
                 this.y += texture.height;
                 gameEventEmitter.emit(events.PLAYERMOVE);
             }
         });
 
         gameEventEmitter.register(events.KEYRIGHT, () => {
-            if (this.x < (texture.width * 6) - texture.width) {
+            if (this.x < (texture.width * TEXTURES_PER_ROW) - texture.width) {
                 this.x += texture.width;
                 gameEventEmitter.emit(events.PLAYERMOVE);
             }
@@ -88,6 +87,9 @@ class Point extends GameObject {
 
 }
 
+
+const TEXTURES_PER_ROW = 6;
+const TEXTURES_PER_COLUMN = 6;
 
 const gameObjects = [];
 const gameEventEmitter = new GameEventEmitter();
@@ -118,8 +120,8 @@ window.onload = async () => {
     initGame();
 
     // Start drawing
-    canvas.width = texturePlayer.width * 6;
-    canvas.height = texturePlayer.height * 6;
+    canvas.width = texturePlayer.width * TEXTURES_PER_ROW;
+    canvas.height = texturePlayer.height * TEXTURES_PER_COLUMN;
     canvasContext.fillStyle = "#202020";
 
     window.requestAnimationFrame(drawGame);
@@ -140,8 +142,8 @@ function initGame() {
 
     gameObjects.push(new Player(texturePlayer, 0, 0));
     
-    for (let x = 0; x <= ((texturePlayer.width * 6) - texturePlayer.width); x += texturePlayer.width) {
-        for (let y = 0; y <= ((texturePlayer.height * 6) - texturePlayer.height); y += texturePlayer.height) {
+    for (let x = 0; x <= ((texturePlayer.width * TEXTURES_PER_ROW) - texturePlayer.width); x += texturePlayer.width) {
+        for (let y = 0; y <= ((texturePlayer.height * TEXTURES_PER_COLUMN) - texturePlayer.height); y += texturePlayer.height) {
             gameObjects.push(new Point(texturePoint, x, y));
         }
     }
