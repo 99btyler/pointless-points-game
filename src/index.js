@@ -53,27 +53,28 @@ class Player extends GameObject {
                 gameEventEmitter.emit(events.PLAYERMOVE);
             }
         });
-
         gameEventEmitter.register(events.KEYDOWN, () => {
             if (this.y < (texture.height * TEXTURES_PER_COLUMN) - texture.height) {
                 this.y += texture.height;
                 gameEventEmitter.emit(events.PLAYERMOVE);
             }
         });
-
         gameEventEmitter.register(events.KEYRIGHT, () => {
             if (this.x < (texture.width * TEXTURES_PER_ROW) - texture.width) {
                 this.x += texture.width;
                 gameEventEmitter.emit(events.PLAYERMOVE);
             }
         });
-
         gameEventEmitter.register(events.KEYLEFT, () => {
             if (this.x >= texture.width) {
                 this.x -= texture.width;
                 gameEventEmitter.emit(events.PLAYERMOVE);
             }
         });
+
+        gameEventEmitter.register(events.PLAYERMOVE, () => {
+            gameObjects.push(new Point(texturePoint, this.x, this.y));
+        })
 
     }
 
@@ -139,15 +140,8 @@ function loadTexture(path) {
 }
 
 function initGame() {
-
     gameObjects.push(new Player(texturePlayer, 0, 0));
-    
-    for (let x = 0; x <= ((texturePlayer.width * TEXTURES_PER_ROW) - texturePlayer.width); x += texturePlayer.width) {
-        for (let y = 0; y <= ((texturePlayer.height * TEXTURES_PER_COLUMN) - texturePlayer.height); y += texturePlayer.height) {
-            gameObjects.push(new Point(texturePoint, x, y));
-        }
-    }
-
+    gameObjects.push(new Point(texturePoint, 0, 0));
 }
 
 function drawGame() {
