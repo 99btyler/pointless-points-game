@@ -78,15 +78,14 @@ class Player extends GameObject {
 
         gameEventEmitter.register(events.PLAYERMOVE, () => {
 
-            for (let i = 1; i < gameObjects.length; i++) {
-                const point = gameObjects[i];
+            for (let point of pointObjects) {
                 if (point.x === this.x && point.y === this.y) {
                     return; // point was already earned
                 }
             }
-            gameObjects.push(new Point(texturePoint, this.x, this.y));
+            pointObjects.push(new Point(texturePoint, this.x, this.y));
 
-            if (gameObjects.length >= (textures_per_side * textures_per_side)+1) {
+            if (pointObjects.length >= (textures_per_side * textures_per_side)) {
 
                 // settings update
                 if (textures_per_side >= max_textures_per_side) {
@@ -119,7 +118,8 @@ class Point extends GameObject {
 }
 
 
-const gameObjects = [];
+const playerObjects = [];
+const pointObjects = [];
 const gameEventEmitter = new GameEventEmitter();
 const events = {
 
@@ -180,8 +180,8 @@ function initGame() {
     canvas.width = texturePlayer.width * textures_per_side;
     canvas.height = texturePlayer.height * textures_per_side;
 
-    gameObjects.push(new Player(texturePlayer, startingX, startingY));
-    gameObjects.push(new Point(texturePoint, startingX, startingY));
+    playerObjects.push(new Player(texturePlayer, startingX, startingY));
+    pointObjects.push(new Point(texturePoint, startingX, startingY));
 
 }
 
@@ -191,7 +191,8 @@ function drawGame() {
 
     canvasContext.fillStyle = "#202020";
     canvasContext.fillRect(0, 0, canvas.width, canvas.height);
-    gameObjects.forEach((gameObject) => gameObject.draw());
+    playerObjects.forEach((playerObject) => playerObject.draw());
+    pointObjects.forEach((pointObject) => pointObject.draw());
 
     window.requestAnimationFrame(drawGame);
 
@@ -199,9 +200,14 @@ function drawGame() {
 
 function resetGame() {
 
-    while (gameObjects.length > 0) {
-        gameObjects.pop();
+    while (playerObjects.length > 0) {
+        playerObjects.pop();
     }
+
+    while (pointObjects.length > 0) {
+        pointObjects.pop();
+    }
+
     gameEventEmitter.clear();
 
     initGame();
