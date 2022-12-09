@@ -78,6 +78,12 @@ class Player extends GameObject {
 
         gameEventEmitter.register(events.PLAYERMOVE, () => {
 
+            for (let i = 1; i < gameObjects.length; i++) {
+                const point = gameObjects[i];
+                if (point.x === this.x && point.y === this.y) {
+                    return; // point was already earned
+                }
+            }
             gameObjects.push(new Point(texturePoint, this.x, this.y));
 
             if (gameObjects.length >= (textures_per_side * textures_per_side)+1) {
