@@ -134,7 +134,7 @@ const events = {
 
 // settings
 const min_textures_per_side = 3;
-const max_textures_per_side = 9;
+const max_textures_per_side = 7;
 let textures_per_side = min_textures_per_side;
 let startingX = 0;
 let startingY = 0;
