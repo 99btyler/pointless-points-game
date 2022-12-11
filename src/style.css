@@ -2,3 +2,16 @@ body {
     margin: 0;
     padding: 0;
 }
+
+div {
+    text-align: center;
+}
+
+div h1 {
+    font-family: sans-serif;
+}
+
+div canvas {
+    padding: 10px;
+    background-color: #202020;
+}
