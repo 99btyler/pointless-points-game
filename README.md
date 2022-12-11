@@ -1,5 +1,5 @@
 # pointless-points-game
-Play a game where the points are pointless
+![pointless-points-game gif](https://i.imgur.com/rUKYD5k.gif)
 
 # Getting Started
 Get this project set up locally
