@@ -222,6 +222,7 @@ window.addEventListener("keydown", (e) => {
     }
 
     switch (e.key) {
+
         case "ArrowUp":
             gameEventEmitter.emit(events.KEYUP);
             break;
@@ -234,6 +235,20 @@ window.addEventListener("keydown", (e) => {
         case "ArrowLeft":
             gameEventEmitter.emit(events.KEYLEFT);
             break;
+
+        case "w":
+            gameEventEmitter.emit(events.KEYUP);
+            break;
+        case "s":
+            gameEventEmitter.emit(events.KEYDOWN);
+            break;
+        case "d":
+            gameEventEmitter.emit(events.KEYRIGHT);
+            break;
+        case "a":
+            gameEventEmitter.emit(events.KEYLEFT);
+            break;
+        
     }
 
 });
